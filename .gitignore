@@ -1,0 +1,35 @@
+# Client dependencies
+client/node_modules/
+client/dist/
+client/dist-ssr/
+client/.vite/
+
+# Logs
+client/*.log
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/pnpm-debug.log*
+client/lerna-debug.log*
+
+# Editor directories and files
+client/.vscode/*
+!client/.vscode/extensions.json
+client/.idea
+client/.DS_Store
+client/*.suo
+client/*.ntvs*
+client/*.njsproj
+client/*.sln
+client/*.sw?
+
+# Environment files
+client/.env
+client/.env.local
+client/.env.*.local
+
+# Test coverage
+client/coverage/
+
+# Build artifacts
+client/build/
