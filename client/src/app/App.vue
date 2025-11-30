@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
+import {BaseLayout} from "./providers/layouts/base";
 </script>
 
 <template>
-  <div>
+  <BaseLayout>
     <router-view></router-view>
-  </div>
+  </BaseLayout>
 </template>
 
 
