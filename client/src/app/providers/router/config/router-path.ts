@@ -13,4 +13,8 @@ export const routes = [
     path: "/catalog/product/:slug",
     component: () => import("@/pages/product/ui/product-page.vue")
   },
+  {
+    path: "/login",
+    component: () => import("@/pages/auth/ui/auth-page.vue")
+  }
 ]
