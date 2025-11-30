@@ -2,7 +2,7 @@ import axios, {AxiosError} from "axios";
 import type {ApiError, ValidationError} from './types'
 import {getToken} from "@/shared/lib/helpers/getToken.ts";
 
-export const http = axios.create({
+export const $http = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ export const http = axios.create({
 });
 
 
-http.interceptors.request.use((config) => {
+$http.interceptors.request.use((config) => {
   const token = getToken()
 
   if (token) {
@@ -22,7 +22,7 @@ http.interceptors.request.use((config) => {
   return config
 })
 
-http.interceptors.response.use(
+$http.interceptors.response.use(
   (response) => response,
   async (error: AxiosError<ValidationError | ApiError>) => {
     const status = error.response?.status
