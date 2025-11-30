@@ -33,3 +33,26 @@ client/coverage/
 
 # Build artifacts
 client/build/
+
+# Server dependencies
+server/node_modules/
+server/dist/
+
+# Server logs
+server/*.log
+server/npm-debug.log*
+server/yarn-debug.log*
+server/yarn-error.log*
+server/pnpm-debug.log*
+server/lerna-debug.log*
+
+# Server environment files
+server/.env
+server/.env.local
+server/.env.*.local
+
+# Server test coverage
+server/coverage/
+
+# Server build artifacts
+server/build/
