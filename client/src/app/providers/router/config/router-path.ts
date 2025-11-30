@@ -16,5 +16,13 @@ export const routes = [
   {
     path: "/login",
     component: () => import("@/pages/auth/ui/auth-page.vue")
+  },
+  {
+    path: '/admin/dashboard',
+    component: () => import("@/pages/admin/ui/admin-dashboard.vue")
+  },
+  {
+    path: "/admin/orders",
+    component: () => import("@/pages/admin/ui/admin-orders.vue")
   }
 ]

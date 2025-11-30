@@ -1,3 +1,4 @@
-import './admin';
+import AdminDashboard from './ui/admin-dashboard.vue';
+import AdminOrders from './ui/admin-orders.vue';
 
-export {}
+export {AdminOrders, AdminDashboard}

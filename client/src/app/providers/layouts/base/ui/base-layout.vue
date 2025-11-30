@@ -1,11 +1,15 @@
 <script setup lang="ts">
 
+import {NavbarUi} from "@/widgets/navbar";
+import {FooterUi} from "@/widgets/footer";
 </script>
 
 <template>
-    <div>
-      <slot></slot>
-    </div>
+  <div>
+    <NavbarUi/>
+    <slot></slot>
+    <FooterUi/>
+  </div>
 </template>
 
 <style scoped>
