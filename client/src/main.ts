@@ -6,16 +6,12 @@ import App from "@/app/App.vue";
 import {routerConfig} from "@/app/providers/router";
 import {setupPinia} from "@/app/providers/store";
 import "@/app/styles/base.css"
+import {setupPrimeVue} from "@/app/providers/design/prime-vue.ts";
 
 const app = createApp(App)
 
 app.use(routerConfig)
-app.use(PrimeVue, {
-  theme: {
-    preset: Aura
-  }
-});
-app.use(ToastService)
+setupPrimeVue(app)
 setupPinia(app)
 
 
