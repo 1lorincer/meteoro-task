@@ -1,5 +1,6 @@
-import {} from "./api/user-api.ts"
-import type {} from "./model/user-model.ts"
+import {userApi} from "./api/user-api.ts"
+import {useUserStore} from "./store/user-store.ts"
+import type {UserModel} from "./model/user-model.ts"
 
-export {}
-export type {}
+export {useUserStore, userApi}
+export type {UserModel}

@@ -1,5 +1,5 @@
-import {} from "./api/auth-api.ts"
-import type {} from "./model/auth-model.ts"
+import {authApi} from "./api/auth-api.ts"
+import type {AuthDto, AuthResponse, RegisterDto} from "./model/auth-model.ts"
 
-export {}
-export type {}
+export {authApi}
+export type {AuthDto, AuthResponse, RegisterDto}

@@ -18,6 +18,10 @@ export const routes = [
     component: () => import("@/pages/auth/ui/auth-page.vue")
   },
   {
+    path: "/orders",
+    component: () => import("@/pages/orders/ui/order-page.vue")
+  },
+  {
     path: '/admin/dashboard',
     component: () => import("@/pages/admin/ui/admin-dashboard.vue")
   },
