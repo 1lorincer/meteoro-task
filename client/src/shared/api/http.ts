@@ -1,7 +1,9 @@
 import axios, {AxiosError} from "axios";
 import type {ApiError, ValidationError} from './types'
 import {getToken} from "@/shared/lib/helpers/getToken.ts";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 export const $http = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
@@ -27,11 +29,12 @@ $http.interceptors.response.use(
     const status = error.response?.status
 
     if (status === 401) {
-      window.location.href = '/login'
+      await router.push('/login')
       return Promise.reject(error)
     }
 
     if (status === 403) {
+      await router.push('/forbidden')
       console.error('Доступ запрещён')
     }
 

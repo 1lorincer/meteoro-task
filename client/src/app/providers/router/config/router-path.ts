@@ -24,5 +24,13 @@ export const routes = [
   {
     path: "/admin/orders",
     component: () => import("@/pages/admin/ui/admin-orders.vue")
+  },
+  {
+    path: "/forbidden",
+    component: () => import("@/pages/forbidden/ui/forbidden-page.vue")
+  },
+  {
+    path: '/:pathMatch(.*)',
+    component: () => import("@/pages/not-found/ui/not-found.vue")
   }
 ]
