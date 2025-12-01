@@ -4,6 +4,7 @@ import {routerConfig} from "@/app/providers/router";
 import {setupPinia} from "@/app/providers/store";
 import {setupPrimeVue} from "@/app/providers/design/prime-vue.ts";
 import "@/app/styles/base.css"
+import 'primeicons/primeicons.css';
 
 const app = createApp(App)
 

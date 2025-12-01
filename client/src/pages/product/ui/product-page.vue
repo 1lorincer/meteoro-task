@@ -13,11 +13,12 @@ import Image from 'primevue/image'
 import Breadcrumb from 'primevue/breadcrumb'
 import {useToast} from 'primevue/usetoast'
 import {formatPrice} from "@/shared/lib/helpers/formatPrice.ts";
+import {useCartStore} from "@/features/cart";
 
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
-
+const cartStore = useCartStore()
 const product = ref<Product | null>(null)
 const loading = ref(true)
 const quantity = ref(1)
@@ -51,6 +52,7 @@ const loadProduct = async () => {
 }
 
 const handleOrder = () => {
+  cartStore.actions.addItem(product.value!, quantity.value)
   toast.add({
     severity: 'success',
     summary: 'Товар добавлен',
