@@ -26,6 +26,10 @@ export const routes = [
   {
     path: "/orders/checkout",
     component: () => import("@/pages/checkout/ui/checkout-order.vue"),
+    meta: {
+      requiresAuth: true,
+      requiredRole: RolesType.USER
+    }
   },
   {
     path: "/orders",

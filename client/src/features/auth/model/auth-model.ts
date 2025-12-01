@@ -14,3 +14,7 @@ export interface RegisterDto extends AuthDto {
   name: string;
   password_confirmation: string;
 }
+
+export interface IMessage {
+  message: string;
+}

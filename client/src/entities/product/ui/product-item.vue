@@ -6,6 +6,7 @@ import Skeleton from "primevue/skeleton";
 import {useToast} from "primevue/usetoast";
 import type {Product} from "@/entities/product";
 import {useCartStore} from "@/features/cart/store/cart-store";
+import {useUserStore} from "@/entities/user";
 
 interface IProps {
   product: Product
@@ -15,15 +16,20 @@ const {product} = defineProps<IProps>()
 const router = useRouter()
 const cartStore = useCartStore()
 const toast = useToast()
-
+const {getters: userGetters} = useUserStore()
 const addToCart = () => {
-  cartStore.actions.addItem(product, 1)
-  toast.add({
-    severity: 'success',
-    summary: 'Добавлено в корзину',
-    detail: `${product.name} добавлен в корзину`,
-    life: 3000
-  })
+  if (userGetters.isLoginUser) {
+    cartStore.actions.addItem(product, 1)
+    toast.add({
+      severity: 'success',
+      summary: 'Добавлено в корзину',
+      detail: `${product.name} добавлен в корзину`,
+      life: 3000
+    })
+  } else {
+    router.push('/login')
+  }
+
 }
 
 </script>
@@ -48,7 +54,8 @@ const addToCart = () => {
       <div class="flex gap-4 mt-1 flex-col">
         <Button @click="router.push(`/catalog/product/${product.id}`)" label="Просмотреть"
                 variant="outlined" class="w-full"/>
-        <Button @click="addToCart" label="В корзину" icon="pi pi-shopping-cart" class="w-full" severity="secondary"/>
+        <Button @click="addToCart" label="В корзину" icon="pi pi-shopping-cart" class="w-full"
+                severity="secondary"/>
       </div>
     </template>
   </Card>

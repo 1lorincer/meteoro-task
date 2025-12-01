@@ -13,20 +13,27 @@ export interface ApiError {
   status: number
 }
 
+export interface PaginationLink {
+  url: string | null
+  label: string
+  page: number | null
+  active: boolean
+}
+
 export interface PaginatedResponse<T> {
+  current_page: number
   data: T[]
-  meta: {
-    current_page: number
-    last_page: number
-    per_page: number
-    total: number
-  }
-  links: {
-    first: string
-    last: string
-    prev: string | null
-    next: string | null
-  }
+  first_page_url: string
+  from: number
+  last_page: number
+  last_page_url: string
+  links: PaginationLink[]
+  next_page_url: string | null
+  path: string
+  per_page: number
+  prev_page_url: string | null
+  to: number
+  total: number
 }
 export interface ApiError {
   message: string

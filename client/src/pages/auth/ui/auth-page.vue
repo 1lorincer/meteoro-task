@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {onMounted, computed} from "vue";
+import {storeToRefs} from "pinia";
 import {useToast} from "primevue";
 import {useRoute, useRouter} from "vue-router";
 import {z} from 'zod';
@@ -10,7 +11,6 @@ import Message from 'primevue/message';
 import Button from 'primevue/button';
 import type {FormSubmitEvent} from '@primevue/forms';
 import {authApi, type AuthDto, type RegisterDto} from "@/features/auth";
-import {storeToRefs} from "pinia";
 import {useUserStore} from "@/entities/user";
 
 const route = useRoute()
@@ -45,13 +45,17 @@ const onFormSubmit = async ({valid, values}: FormSubmitEvent) => {
     try {
       if (isLogin.value) {
         const response = await authApi.login(values as AuthDto);
+        console.log(response)
         localStorage.setItem('token', response.token);
         user.value = response.user;
         toast.add({severity: 'success', summary: 'Вход выполнен', life: 3000});
         await router.push('/orders')
       } else {
-        await authApi.register(values as RegisterDto);
+        const response = await authApi.register(values as RegisterDto);
+        localStorage.setItem('token', response.token);
+        user.value = response.user;
         toast.add({severity: 'success', summary: 'Регистрация успешна', life: 3000});
+        await router.push('/orders')
       }
     } catch (error) {
       toast.add({
@@ -69,11 +73,6 @@ const toggleMode = () => {
     query: {status: isLogin.value ? 'signup' : 'login'}
   });
 };
-onMounted(() => {
-  if (!route.query.status) {
-    router.replace({query: {status: 'login'}});
-  }
-})
 </script>
 
 

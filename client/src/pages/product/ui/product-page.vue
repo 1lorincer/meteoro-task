@@ -14,11 +14,14 @@ import Breadcrumb from 'primevue/breadcrumb'
 import {useToast} from 'primevue/usetoast'
 import {formatPrice} from "@/shared/lib/helpers/formatPrice.ts";
 import {useCartStore} from "@/features/cart";
+import {useUserStore} from "@/entities/user";
 
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const cartStore = useCartStore()
+const {getters: userGetters, actions: userActions} = useUserStore()
+
 const product = ref<Product | null>(null)
 const loading = ref(true)
 const quantity = ref(1)
@@ -51,14 +54,19 @@ const loadProduct = async () => {
   }
 }
 
+
 const handleOrder = () => {
-  cartStore.actions.addItem(product.value!, quantity.value)
-  toast.add({
-    severity: 'success',
-    summary: 'Товар добавлен',
-    detail: `${product.value?.name} (${quantity.value} шт.) добавлен в корзину`,
-    life: 3000
-  })
+  if (userGetters.isLoginUser) {
+    cartStore.actions.addItem(product.value!, quantity.value)
+    toast.add({
+      severity: 'success',
+      summary: 'Товар добавлен',
+      detail: `${product.value?.name} (${quantity.value} шт.) добавлен в корзину`,
+      life: 3000
+    })
+  } else {
+    router.push('/login')
+  }
 }
 
 
@@ -76,6 +84,7 @@ const getStockLabel = (stock: number) => {
 
 onMounted(() => {
   loadProduct()
+  userActions.init()
 })
 </script>
 

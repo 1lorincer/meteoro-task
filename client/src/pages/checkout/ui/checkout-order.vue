@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useRouter} from 'vue-router'
 import {storeToRefs} from 'pinia'
 import {useToast} from 'primevue/usetoast'
@@ -26,8 +26,7 @@ const {items} = storeToRefs(useCartStore())
 const {getters: cartStoreGetters, actions: cartStoreActions} = useCartStore()
 
 const {user} = storeToRefs(useUserStore())
-
-
+const {actions: userActions} = useUserStore()
 
 const loading = ref(false)
 const activeStep = ref(1)
@@ -101,6 +100,9 @@ const submitOrder = async () => {
     loading.value = false
   }
 }
+onMounted(() => {
+  userActions.init()
+})
 </script>
 
 <template>
@@ -109,10 +111,10 @@ const submitOrder = async () => {
       <div class="mb-8">
         <Button
           icon="pi pi-arrow-left"
-          label="Вернуться в корзину"
+          label="Вернуться в каталог"
           severity="secondary"
           text
-          @click="router.push('/cart')"
+          @click="router.push('/')"
           class="mb-4"
         />
         <h1 class="text-3xl font-bold text-white">Оформление заказа</h1>

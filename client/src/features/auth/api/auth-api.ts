@@ -1,5 +1,5 @@
 import {$http} from "@/shared/api/http.ts";
-import type {AuthDto, AuthResponse, RegisterDto} from "@/features/auth";
+import type {AuthDto, AuthResponse, IMessage, RegisterDto} from "@/features/auth";
 import type {UserModel} from "@/entities/user";
 
 class AuthApi {
@@ -11,7 +11,7 @@ class AuthApi {
     return (await $http.post<AuthResponse>('/register', data)).data
   }
 
-  async logout(): Promise<void> {
+  async logout(): Promise<IMessage> {
     return (await $http.post('/logout')).data
   }
 

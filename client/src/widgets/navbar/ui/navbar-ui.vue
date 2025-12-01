@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import {storeToRefs} from "pinia";
+import {ref, watchEffect} from "vue";
 import {useRouter} from "vue-router";
 import Menubar from "primevue/menubar";
 import Button from "primevue/button";

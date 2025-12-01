@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {useRouter} from "vue-router";
+import {useToast} from "primevue/usetoast";
 import Button from "primevue/button";
 import Avatar from "primevue/avatar";
 import {useToggleSidebar} from "@/features/toggle-sidebar";
@@ -8,6 +9,7 @@ import {useCartStore, Cart} from "@/features/cart";
 import {useUserStore} from "@/entities/user";
 import {RolesType} from "@/shared/const/roles";
 import {formatPrice} from "@/shared/lib/helpers/formatPrice.ts";
+import {authApi} from "@/features/auth";
 
 const sidebarStore = useToggleSidebar();
 const {isOpen, mode} = storeToRefs(sidebarStore);
@@ -15,6 +17,7 @@ const {user} = storeToRefs(useUserStore());
 const cartStore = useCartStore();
 const {items} = storeToRefs(cartStore);
 const router = useRouter();
+const toast = useToast();
 
 const menuItems = [
   {label: 'Главная', icon: 'pi pi-home', route: '/'},
@@ -26,16 +29,25 @@ const navigateTo = (route: string) => {
   sidebarStore.actions.close();
 };
 
-const handleLogout = () => {
-  localStorage.removeItem('token');
-  user.value = {
-    id: null,
-    name: '',
-    email: '',
-    role: RolesType.DEFAULT
-  };
-  router.push('/auth?status=login');
-  sidebarStore.actions.close();
+const handleLogout = async () => {
+  try {
+    const res = await authApi.logout()
+    localStorage.removeItem('token');
+    user.value = {
+      id: null,
+      name: '',
+      email: '',
+      role: RolesType.DEFAULT
+    };
+    sidebarStore.actions.close();
+    await router.push('/login');
+    toast.add({severity: 'success', summary: res.message, life: 3000});
+  } catch (e) {
+    console.error('Logout error:', e)
+    localStorage.removeItem('token')
+    sidebarStore.actions.close()
+    await router.push('/login');
+  }
 };
 
 const closeSidebar = () => {

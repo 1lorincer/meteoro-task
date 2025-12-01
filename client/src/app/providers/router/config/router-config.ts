@@ -1,31 +1,41 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import {routes} from "./router-path.ts";
-import {useUserStore} from "@/entities/user/store/user-store.ts";
-import {RolesType} from "@/shared/const/roles.ts";
+import {useUserStore} from "@/entities/user"
+import {RolesType} from "@/shared/const/roles"
+import {routes} from "./router-path"
 
-const routerConfig = createRouter({
+const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routes,
 })
 
-routerConfig.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
-  const isAuthenticated = userStore.getters.isLoginUser
+  const token = localStorage.getItem('token')
+
+  if (token && !userStore.user.id) {
+    try {
+      await userStore.actions.getUserData()
+    } catch (e) {
+      localStorage.removeItem('token')
+    }
+  }
+
+  const isAuthenticated = !!token && !!userStore.user.id
 
   if (to.meta.requiresAuth) {
     if (!isAuthenticated) {
-      next({path: '/login', query: {redirect: to.fullPath}})
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath}
+      })
       return
-    }
-    if (userStore.user.role === RolesType.DEFAULT) {
-      await userStore.actions.getUserData()
     }
 
     if (to.meta.requiredRole) {
       const userRole = userStore.user.role
-      const requiredRole = to.meta.requiredRole
+      const requiredRole = to.meta.requiredRole as RolesType
 
-      if (requiredRole === RolesType.ADMIN && !userStore.getters.isAdmin) {
+      if (requiredRole === RolesType.ADMIN && !userStore.isAdmin) {
         next('/forbidden')
         return
       }
@@ -36,6 +46,7 @@ routerConfig.beforeEach(async (to, from, next) => {
       }
     }
   }
+
   if (to.path === '/login' && isAuthenticated) {
     next('/')
     return
@@ -44,4 +55,4 @@ routerConfig.beforeEach(async (to, from, next) => {
   next()
 })
 
-export default routerConfig
+export default router

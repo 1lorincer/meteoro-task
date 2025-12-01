@@ -9,12 +9,13 @@ export const useUserStore = defineStore('user', () => {
     id: 0,
     email: "",
     name: "",
-    role: RolesType.DEFAULT
+    role: RolesType.DEFAULT,
+    email_verified_at: null
   })
-  const isAdmin = computed(() =>  user.value.role === RolesType.ADMIN)
+  const isAdmin = computed(() => user.value.role === RolesType.ADMIN)
   const isUser = computed(() => user.value.role === RolesType.USER)
 
-  const isLoginUser = computed(() => !!getToken())
+  const isLoginUser = computed(() => !!user.value.id && !!getToken())
 
   const getUserData = async () => {
     try {
@@ -22,6 +23,12 @@ export const useUserStore = defineStore('user', () => {
       user.value = data
     } catch (e) {
       console.error(e)
+    }
+  }
+
+  const init = async () => {
+    if (!!getToken()) {
+      await getUserData()
     }
   }
   return {
@@ -34,7 +41,8 @@ export const useUserStore = defineStore('user', () => {
       isAdmin
     },
     actions: {
-      getUserData
+      getUserData,
+      init
     }
   }
 })
