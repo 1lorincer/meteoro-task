@@ -4,9 +4,8 @@ import {useRouter} from "vue-router";
 import Button from "primevue/button";
 import Avatar from "primevue/avatar";
 import {useToggleSidebar} from "@/features/toggle-sidebar";
+import {useCartStore, Cart} from "@/features/cart";
 import {useUserStore} from "@/entities/user";
-import {useCartStore} from "@/features/cart/store/cart-store";
-import CartItem from "@/features/cart/ui/cart-item.vue";
 import {RolesType} from "@/shared/const/roles";
 import {formatPrice} from "@/shared/lib/helpers/formatPrice.ts";
 
@@ -44,9 +43,10 @@ const closeSidebar = () => {
 };
 
 const handleCheckout = () => {
-  router.push('/checkout');
+  router.push('/orders/checkout');
   sidebarStore.actions.close();
 };
+
 </script>
 
 <template>
@@ -122,9 +122,10 @@ const handleCheckout = () => {
     <template v-else-if="mode === 'cart'">
       <div class="p-4 border-b flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <i class="pi pi-shopping-cart text-xl" />
+          <i class="pi pi-shopping-cart text-xl"/>
           <h2 class="text-xl font-bold">Корзина</h2>
-          <span v-if="cartStore.getters.totalItems" class="bg-primary text-white rounded-full px-2 py-0.5 text-xs font-bold">
+          <span v-if="cartStore.getters.totalItems"
+                class="bg-primary text-white rounded-full px-2 py-0.5 text-xs font-bold">
             {{ cartStore.getters.totalItems }}
           </span>
         </div>
@@ -139,14 +140,15 @@ const handleCheckout = () => {
 
       <!-- Cart Items -->
       <div class="flex-1 overflow-y-auto p-4">
-        <div v-if="items.length === 0" class="flex flex-col items-center justify-center h-full text-center text-zinc-400">
-          <i class="pi pi-shopping-cart text-6xl mb-4" />
+        <div v-if="items.length === 0"
+             class="flex flex-col items-center justify-center h-full text-center text-zinc-400">
+          <i class="pi pi-shopping-cart text-6xl mb-4"/>
           <p class="text-lg">Корзина пуста</p>
           <p class="text-sm mt-2">Добавьте товары для оформления заказа</p>
         </div>
 
         <div v-else class="flex flex-col gap-3">
-          <CartItem
+          <Cart
             v-for="item in items"
             :key="item.product.id"
             :item="item"
@@ -154,7 +156,6 @@ const handleCheckout = () => {
         </div>
       </div>
 
-      <!-- Cart Footer -->
       <div v-if="items.length > 0" class="p-4 border-t space-y-3">
         <div class="flex justify-between items-center text-lg font-bold">
           <span>Итого:</span>

@@ -14,7 +14,7 @@ const router = useRouter()
 const items = ref([])
 const {getters: userGetters} = useUserStore()
 const {actions: toggleSidebarActions} = useToggleSidebar()
-const cartStore = useCartStore()
+const {getters: cartStoreGetters} = useCartStore()
 
 const openCart = () => {
   toggleSidebarActions.open('cart')
@@ -43,8 +43,8 @@ const openMenu = () => {
             @click="openCart"
           />
           <Badge
-            v-if="cartStore.totalItems > 0"
-            :value="cartStore.totalItems"
+            v-if="cartStoreGetters.totalItems > 0"
+            :value="cartStoreGetters.totalItems"
             severity="danger"
             class="absolute -top-1 -right-1 !min-w-5 !h-5 !text-xs"
           />
