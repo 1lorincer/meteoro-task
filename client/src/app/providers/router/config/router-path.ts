@@ -6,11 +6,7 @@ export const routes = [
     component: HomePage
   },
   {
-    path: "/catalog",
-    component: () => import("@/pages/catalog/ui/catalog-page.vue")
-  },
-  {
-    path: "/catalog/product/:slug",
+    path: "/catalog/product/:id",
     component: () => import("@/pages/product/ui/product-page.vue")
   },
   {
