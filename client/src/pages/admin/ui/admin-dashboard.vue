@@ -3,6 +3,7 @@ import {computed, onMounted, ref} from "vue";
 import {useToast} from "primevue";
 import Button from "primevue/button";
 import {ProductTable} from "@/widgets/product-table";
+import {AdminNavigation} from "@/widgets/admin-navigation";
 import {adminProductsApi} from "@/entities/admin/products";
 import type {Product} from "@/entities/product";
 import {EditProductDialog, useEditProductStore} from "@/features/edit-product";
@@ -93,6 +94,8 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col gap-4">
+    <AdminNavigation/>
+
     <div class="flex justify-between items-center">
       <h1 class="text-2xl font-bold">Управление товарами</h1>
       <Button

@@ -6,8 +6,9 @@ import type {
   OrderResponse,
   OrderById,
   OrderDto,
+  StatusType,
 } from "./model/order-model.ts"
 import {ORDER_STATUS_MAP} from "./model/order-model.ts"
 
 export {orderApi, ORDER_STATUS_MAP, OrderCard}
-export type {OrderModel, OrderItemModel, OrderResponse, OrderById, OrderDto}
+export type {OrderModel, OrderItemModel, OrderResponse, OrderById, OrderDto, StatusType}

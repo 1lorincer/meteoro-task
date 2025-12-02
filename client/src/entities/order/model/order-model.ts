@@ -1,6 +1,8 @@
 import type {StatusType} from "@/shared/types/status-type.ts";
 import type {Product} from "@/entities/product";
 
+export type {StatusType};
+
 export interface OrderItemModel {
   id: number,
   product_id: number,

@@ -12,6 +12,7 @@ defineProps<IProps>()
 
 const emit = defineEmits<{
   refresh: []
+
 }>()
 
 </script>
