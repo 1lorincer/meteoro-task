@@ -1,5 +1,5 @@
 # Инструкциями по развертыванию (как запустить backend и frontend)
-### 2. Backend (Laravel)
+### 1. Backend (Laravel)
 ```bash
 cd server
 
@@ -36,7 +36,7 @@ php artisan serve
 Backend будет доступен на `http://localhost:8000`
 Swagger документация: `http://localhost:8000/api/documentation`
 
-### 3. Frontend (Vue.js)
+### 2. Frontend (Vue.js)
 ```bash
 cd client
 
