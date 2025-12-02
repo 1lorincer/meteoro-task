@@ -8,6 +8,11 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Api\Admin\OrderController as AdminOrderController;
 
+// Handle OPTIONS requests for CORS preflight
+Route::options('{any}', function () {
+    return response('', 200);
+})->where('any', '.*');
+
 // public-routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -35,7 +40,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::apiResource('products', AdminProductController::class);
     Route::get('/orders', [AdminOrderController::class, 'index']);
     Route::get('/orders/{id}', [AdminOrderController::class, 'show']);
-    Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
+    Route::post('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
 });
 
 

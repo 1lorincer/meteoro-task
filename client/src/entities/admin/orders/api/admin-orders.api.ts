@@ -13,7 +13,7 @@ class AdminOrdersApi {
   }
 
   async updateOrderStatus(id: number, status: string): Promise<OrderModel> {
-    return (await $http.patch(`${this.basePath}/${id}/status`, {status})).data
+    return (await $http.post(`${this.basePath}/${id}/status`, { status })).data
   }
 }
 
