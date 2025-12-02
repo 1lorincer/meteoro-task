@@ -4,6 +4,7 @@ import InputNumber from "primevue/inputnumber";
 import type {CartItem} from "@/features/cart/models/cart-model.ts";
 import {useCartStore} from "@/features/cart/store/cart-store.ts";
 import {formatPrice} from "@/shared/lib/helpers/formatPrice.ts";
+import {getImageUrl} from "@/shared/lib/helpers/getImageUrl";
 
 interface IProps {
   item: CartItem;
@@ -29,7 +30,7 @@ const removeFromCart = () => {
     <div class="w-20 h-20 flex-shrink-0 bg-zinc-700 rounded overflow-hidden">
       <img
         v-if="item.product.image"
-        :src="item.product.image"
+        :src="getImageUrl(item.product.image) || ''"
         :alt="item.product.name"
         class="w-full h-full object-cover"
       />
@@ -40,7 +41,7 @@ const removeFromCart = () => {
 
     <div class="flex-1 min-w-0">
       <h4 class="font-semibold truncate mb-1">{{ item.product.name }}</h4>
-      <p class="text-sm text-zinc-400 mb-2">{{ item.product.price }} ₽</p>
+      <p class="text-sm text-zinc-400 mb-2">{{ formatPrice(item.product.price) }}</p>
 
       <div class="flex items-center gap-2">
         <InputNumber

@@ -7,13 +7,12 @@ import Avatar from "primevue/avatar";
 import {useToggleSidebar} from "@/features/toggle-sidebar";
 import {useCartStore, Cart} from "@/features/cart";
 import {useUserStore} from "@/entities/user";
-import {RolesType} from "@/shared/const/roles";
 import {formatPrice} from "@/shared/lib/helpers/formatPrice.ts";
-import {authApi} from "@/features/auth";
 
 const sidebarStore = useToggleSidebar();
 const {isOpen, mode} = storeToRefs(sidebarStore);
 const {user} = storeToRefs(useUserStore());
+const {actions: userActions} = useUserStore();
 const cartStore = useCartStore();
 const {items} = storeToRefs(cartStore);
 const router = useRouter();
@@ -31,17 +30,10 @@ const navigateTo = (route: string) => {
 
 const handleLogout = async () => {
   try {
-    const res = await authApi.logout()
-    localStorage.removeItem('token');
-    user.value = {
-      id: null,
-      name: '',
-      email: '',
-      role: RolesType.DEFAULT
-    };
+    const data = (await userActions.logout());
     sidebarStore.actions.close();
     await router.push('/login');
-    toast.add({severity: 'success', summary: res.message, life: 3000});
+    toast.add({severity: 'success', summary: data.message, life: 3000});
   } catch (e) {
     console.error('Logout error:', e)
     localStorage.removeItem('token')

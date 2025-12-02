@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
@@ -39,6 +40,10 @@ class ProductService
     {
         $data['slug'] = Str::slug($data['name']);
 
+        if (isset($data['image'])) {
+            $data['image'] = $this->handleImageUpload($data['image']);
+        }
+
         return Product::create($data);
     }
 
@@ -48,8 +53,22 @@ class ProductService
             $data['slug'] = Str::slug($data['name']);
         }
 
+        if (isset($data['image'])) {
+            // Удаляем старое изображение если есть
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $data['image'] = $this->handleImageUpload($data['image']);
+        }
+
         $product->update($data);
 
-        return $product;
+        return $product->fresh();
+    }
+
+    private function handleImageUpload($image): string
+    {
+        $path = $image->store('products', 'public');
+        return $path;
     }
 }

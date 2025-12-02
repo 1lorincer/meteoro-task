@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import {ref, watchEffect} from "vue";
+import {ref} from "vue";
 import {useRouter} from "vue-router";
 import Menubar from "primevue/menubar";
 import Button from "primevue/button";
 import Badge from "primevue/badge";
 import {useToggleSidebar} from "@/features/toggle-sidebar";
-import {useUserStore} from "@/entities/user";
 import {useCartStore} from "@/features/cart/store/cart-store";
+import {useUserStore} from "@/entities/user";
 import {BurgerMenu} from "@/shared/ui/burger";
 
 const router = useRouter()
 const items = ref([])
-const {getters: userGetters} = useUserStore()
+const {getters: userGetters, actions: userActions} = useUserStore()
 const {actions: toggleSidebarActions} = useToggleSidebar()
 const {getters: cartStoreGetters} = useCartStore()
 
@@ -22,17 +22,22 @@ const openCart = () => {
 const openMenu = () => {
   toggleSidebarActions.open('menu')
 }
+const handleLogout = () => {
+  userActions.logout()
+  router.push('/login')
+}
 </script>
 
 <template>
   <Menubar :model="items" class="py-5 px-6">
     <template #start>
-      <router-link to="/" class="text-2xl font-semibold">
-        Meteoro market
+      <router-link :to="userGetters.isAdmin ? '/admin/dashboard' : '/'"
+                   class="text-2xl font-semibold">
+        Meteoro {{ userGetters.isAdmin ? 'Dashboard' : 'Market' }}
       </router-link>
     </template>
     <template #end>
-      <div v-if="userGetters.isLoginUser" class="flex items-center gap-3">
+      <div v-if="userGetters.isLoginUser && userGetters.isUser" class="flex items-center gap-3">
         <div class="relative">
           <Button
             icon="pi pi-shopping-cart"
@@ -51,6 +56,9 @@ const openMenu = () => {
 
         <BurgerMenu @click="openMenu"/>
       </div>
+      <Button v-else-if="userGetters.isAdmin" severity="danger" @click="handleLogout">
+        Выйти
+      </Button>
       <Button v-else severity="success" label="Войти" @click="router.push('/login')"/>
     </template>
   </Menubar>

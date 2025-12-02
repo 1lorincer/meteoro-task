@@ -7,6 +7,7 @@ import {useToast} from "primevue/usetoast";
 import type {Product} from "@/entities/product";
 import {useCartStore} from "@/features/cart/store/cart-store";
 import {useUserStore} from "@/entities/user";
+import {getImageUrl} from "@/shared/lib/helpers/getImageUrl";
 
 interface IProps {
   product: Product
@@ -37,7 +38,11 @@ const addToCart = () => {
 <template>
   <Card style="width: 100%; overflow: hidden; position: relative;">
     <template #header>
-      <img :alt="`product ${product?.name}`" v-if="product.image" :src="product.image || ''"/>
+      <div v-if="product.image" class="w-full h-40">
+        <img :alt="`product ${product?.name}`"
+             class="object-cover w-full h-full"
+             :src="getImageUrl(product.image) || ''" width="365" height="160"/>
+      </div>
       <Skeleton height="10rem" width="100%" v-else/>
       <div class="absolute right-3 top-3">
 
@@ -51,7 +56,7 @@ const addToCart = () => {
       </p>
     </template>
     <template #footer>
-      <div class="flex gap-4 mt-1 flex-col">
+      <div class="flex gap-4 mt-2 flex-col">
         <Button @click="router.push(`/catalog/product/${product.id}`)" label="Просмотреть"
                 variant="outlined" class="w-full"/>
         <Button @click="addToCart" label="В корзину" icon="pi pi-shopping-cart" class="w-full"

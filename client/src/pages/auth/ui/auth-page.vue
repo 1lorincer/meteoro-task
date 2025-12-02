@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, computed} from "vue";
+import {computed} from "vue";
 import {storeToRefs} from "pinia";
 import {useToast} from "primevue";
 import {useRoute, useRouter} from "vue-router";
@@ -12,6 +12,7 @@ import Button from 'primevue/button';
 import type {FormSubmitEvent} from '@primevue/forms';
 import {authApi, type AuthDto, type RegisterDto} from "@/features/auth";
 import {useUserStore} from "@/entities/user";
+import {RolesType} from "@/shared/const/roles.ts";
 
 const route = useRoute()
 const router = useRouter()
@@ -47,9 +48,14 @@ const onFormSubmit = async ({valid, values}: FormSubmitEvent) => {
         const response = await authApi.login(values as AuthDto);
         console.log(response)
         localStorage.setItem('token', response.token);
+        localStorage.setItem('role', response.user.role);
         user.value = response.user;
         toast.add({severity: 'success', summary: 'Вход выполнен', life: 3000});
-        await router.push('/orders')
+        if (response.user.role === RolesType.ADMIN) {
+          await router.push('/admin/dashboard')
+        } else {
+          await router.push('/orders')
+        }
       } else {
         const response = await authApi.register(values as RegisterDto);
         localStorage.setItem('token', response.token);

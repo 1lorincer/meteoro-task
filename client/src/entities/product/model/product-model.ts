@@ -1,18 +1,18 @@
 import type {CategoryModel} from "@/entities/category";
 
 export interface Product {
-  id: number
+  id: number //
   category_id: number
   name: string
   slug: string
   description: string | null
   price: number
-  stock: number
-  image: string | null
+  stock: number;
+  image: File | string | null;
   is_active: boolean
-  category: CategoryModel
-  created_at: string
-  updated_at: string
+  category: CategoryModel //
+  created_at: string //
+  updated_at: string //
 }
 export interface ProductListParams {
   category_id?: number

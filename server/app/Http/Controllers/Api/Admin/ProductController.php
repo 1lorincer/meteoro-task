@@ -74,18 +74,22 @@ class ProductController extends Controller
      *      operationId="adminCreateProduct",
      *      tags={"Admin/Products"},
      *      summary="Создать новый товар (админ)",
-     *      description="Создает новый товар в системе",
+     *      description="Создает новый товар в системе с возможностью загрузки изображения",
      *      security={{"bearerAuth":{}}},
      *      @OA\RequestBody(
      *          required=true,
-     *          @OA\JsonContent(
-     *              required={"category_id","name","price","stock"},
-     *              @OA\Property(property="category_id", type="integer", example=1),
-     *              @OA\Property(property="name", type="string", example="Смартфон Samsung"),
-     *              @OA\Property(property="description", type="string", example="Описание товара", nullable=true),
-     *              @OA\Property(property="price", type="number", format="float", example=29999.99),
-     *              @OA\Property(property="stock", type="integer", example=10),
-     *              @OA\Property(property="is_active", type="boolean", example=true)
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  required={"category_id","name","price","stock"},
+     *                  @OA\Property(property="category_id", type="integer", example=1),
+     *                  @OA\Property(property="name", type="string", example="Смартфон Samsung"),
+     *                  @OA\Property(property="description", type="string", example="Описание товара", nullable=true),
+     *                  @OA\Property(property="price", type="number", format="float", example=29999.99),
+     *                  @OA\Property(property="stock", type="integer", example=10),
+     *                  @OA\Property(property="image", type="string", format="binary", description="Изображение товара (jpeg, jpg, png, gif, webp, max: 2MB)", nullable=true),
+     *                  @OA\Property(property="is_active", type="boolean", example=true)
+     *              )
      *          )
      *      ),
      *      @OA\Response(
@@ -95,7 +99,8 @@ class ProductController extends Controller
      *              @OA\Property(property="id", type="integer", example=1),
      *              @OA\Property(property="category_id", type="integer", example=1),
      *              @OA\Property(property="name", type="string", example="Смартфон Samsung"),
-     *              @OA\Property(property="price", type="number", format="float", example=29999.99)
+     *              @OA\Property(property="price", type="number", format="float", example=29999.99),
+     *              @OA\Property(property="image", type="string", example="products/image123.jpg", nullable=true)
      *          )
      *      ),
      *      @OA\Response(
@@ -120,6 +125,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
             'is_active' => 'boolean',
         ]);
 
@@ -175,12 +181,12 @@ class ProductController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *      path="/api/admin/products/{id}",
      *      operationId="adminUpdateProduct",
      *      tags={"Admin/Products"},
      *      summary="Обновить товар (админ)",
-     *      description="Обновляет существующий товар",
+     *      description="Обновляет существующий товар с возможностью загрузки изображения. Используйте _method=PUT в form-data",
      *      security={{"bearerAuth":{}}},
      *      @OA\Parameter(
      *          name="id",
@@ -191,13 +197,18 @@ class ProductController extends Controller
      *      ),
      *      @OA\RequestBody(
      *          required=true,
-     *          @OA\JsonContent(
-     *              @OA\Property(property="category_id", type="integer", example=1),
-     *              @OA\Property(property="name", type="string", example="Смартфон Samsung"),
-     *              @OA\Property(property="description", type="string", example="Обновленное описание"),
-     *              @OA\Property(property="price", type="number", format="float", example=27999.99),
-     *              @OA\Property(property="stock", type="integer", example=15),
-     *              @OA\Property(property="is_active", type="boolean", example=true)
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(property="_method", type="string", example="PUT", description="HTTP метод для Laravel"),
+     *                  @OA\Property(property="category_id", type="integer", example=1),
+     *                  @OA\Property(property="name", type="string", example="Смартфон Samsung"),
+     *                  @OA\Property(property="description", type="string", example="Обновленное описание", nullable=true),
+     *                  @OA\Property(property="price", type="number", format="float", example=27999.99),
+     *                  @OA\Property(property="stock", type="integer", example=15),
+     *                  @OA\Property(property="image", type="string", format="binary", description="Изображение товара (jpeg, jpg, png, gif, webp, max: 2MB)", nullable=true),
+     *                  @OA\Property(property="is_active", type="boolean", example=true)
+     *              )
      *          )
      *      ),
      *      @OA\Response(
@@ -232,6 +243,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'sometimes|numeric|min:0',
             'stock' => 'sometimes|integer|min:0',
+            'image' => 'nullable|file|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
             'is_active' => 'boolean',
         ]);
 

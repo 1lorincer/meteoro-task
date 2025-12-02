@@ -3,6 +3,7 @@ import {defineStore} from "pinia";
 import {userApi, type UserModel} from "@/entities/user";
 import {RolesType} from "@/shared/const/roles.ts";
 import {getToken} from "@/shared/lib/helpers/getToken.ts";
+import {authApi} from "@/features/auth";
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<UserModel>({
@@ -25,6 +26,17 @@ export const useUserStore = defineStore('user', () => {
       console.error(e)
     }
   }
+  const logout = async () => {
+    const res = await authApi.logout()
+    localStorage.removeItem('token');
+    user.value = {
+      id: null,
+      name: '',
+      email: '',
+      role: RolesType.DEFAULT
+    };
+    return res
+  }
 
   const init = async () => {
     if (!!getToken()) {
@@ -42,7 +54,8 @@ export const useUserStore = defineStore('user', () => {
     },
     actions: {
       getUserData,
-      init
+      init,
+      logout
     }
   }
 })

@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
+
+        // Добавляем CORS middleware для всех запросов
+        $middleware->append(\App\Http\Middleware\AddCorsHeaders::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

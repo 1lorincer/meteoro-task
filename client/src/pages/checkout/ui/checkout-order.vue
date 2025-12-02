@@ -18,6 +18,7 @@ import {useCartStore} from '@/features/cart'
 import {orderApi} from "@/entities/order";
 import {useUserStore} from '@/entities/user'
 import {formatPrice} from "@/shared/lib/helpers/formatPrice.ts";
+import {getImageUrl} from "@/shared/lib/helpers/getImageUrl";
 
 const router = useRouter()
 const toast = useToast()
@@ -238,7 +239,7 @@ onMounted(() => {
                             class="flex gap-4 p-3  rounded-lg"
                           >
                             <img
-                              :src="item.product.image || '/placeholder.png'"
+                              :src="getImageUrl(item.product.image) || '/placeholder.png'"
                               :alt="item.product.name"
                               class="w-16 h-16 object-cover rounded"
                             />

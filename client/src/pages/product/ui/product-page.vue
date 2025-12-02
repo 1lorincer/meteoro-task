@@ -15,6 +15,7 @@ import {useToast} from 'primevue/usetoast'
 import {formatPrice} from "@/shared/lib/helpers/formatPrice.ts";
 import {useCartStore} from "@/features/cart";
 import {useUserStore} from "@/entities/user";
+import {getImageUrl} from "@/shared/lib/helpers/getImageUrl";
 
 const route = useRoute()
 const router = useRouter()
@@ -109,7 +110,7 @@ onMounted(() => {
             <div class="product-image-container">
               <Image
                 v-if="product.image"
-                :src="product.image"
+                :src="getImageUrl(product.image) || ''"
                 :alt="product.name"
                 preview
                 class="product-image"
